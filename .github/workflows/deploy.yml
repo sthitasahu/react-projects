@@ -22,16 +22,10 @@ jobs:
           node-version: '16'  # Ensure you're using the version compatible with Vite
 
       - name: Install Dependencies
-        run: npm install
+        run: cd form-validation && npm install
 
       - name: Build Project
-        run: npm run build
+        run: cd form-validation && npm run build
 
-      - name: Check VERCEL_TOKEN
-        run: |
-          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
-            echo "VERCEL_TOKEN is not set."
-            exit 1
-          fi
       - name: Deploy to Vercel
-        run: npx vercel --token=${{ secrets.VERCEL_TOKEN }} --prod --confirm
+        run: cd form-validation && npx vercel --token=${{ secrets.VERCEL_TOKEN }} --prod --confirm
