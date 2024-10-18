@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  
+          node-version: '16'  # Ensure you're using the version compatible with Vite
 
       - name: Install Dependencies
         run: npm install
@@ -27,8 +27,11 @@ jobs:
       - name: Build Project
         run: npm run build
 
+      - name: Check VERCEL_TOKEN
+        run: |
+          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
+            echo "VERCEL_TOKEN is not set."
+            exit 1
+          fi
       - name: Deploy to Vercel
         run: npx vercel --token=${{ secrets.VERCEL_TOKEN }} --prod --confirm
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}  # Add Vercel Org ID if required
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}  # Add Vercel Project ID if required
